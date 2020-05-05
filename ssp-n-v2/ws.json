@@ -1,0 +1,83 @@
+{
+  "log": {
+    "loglevel": "debug"
+  },
+  "api": {
+    "tag": "api",
+    "services": [
+      "HandlerService",
+      "LoggerService",
+      "StatsService"
+    ]
+  },
+  "stats": {},
+  "inbounds": [
+    {
+      "port": 10086,
+      "protocol": "vmess",
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+        "path": "/phpmyadmin"
+        }
+      },
+      "tag": "proxy"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 10085,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "127.0.0.1"
+      },
+      "tag": "api"
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom"
+    }
+  ],
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": [
+          "api"
+        ],
+        "outboundTag": "api"
+      }
+    ],
+    "strategy": "rules"
+  },
+  "policy": {
+    "levels": {
+      "0": {
+        "statsUserUplink": true,
+        "statsUserDownlink": true
+      }
+    },
+    "system": {
+      "statsInboundUplink": true,
+      "statsInboundDownlink": true
+    }
+  },
+  "ssrpanel": {
+    "nodeId": nodeidnodeid,
+    "checkRate": 600,
+    "ignoreEmptyVmessID": true,
+    "user": {
+      "inboundTag": "proxy",
+      "level": 0,
+      "alterId": alteridalterid,
+      "security": "none"
+    },
+    "mysql": {
+      "host": "dbhost",
+      "port": 3306,
+      "user": "dbusername",
+      "password": "dbpassword",
+      "dbname": "dbnamedbname"
+    }
+  }
+}
